@@ -1,0 +1,39 @@
+# SECURITY: Runs as non-root, no privileged mode, no Docker access
+
+services:
+  openclaw:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openclaw
+    ports:
+      - "127.0.0.1:18789:18789"  # localhost only
+    volumes:
+      - openclaw-config:/home/node/.openclaw
+      - openclaw-workspace:/home/node/.openclaw/workspace
+    environment:
+      - NODE_ENV=production
+    security_opt:
+      - no-new-privileges:true
+    read_only: false
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:18789/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - openclaw-network
+
+volumes:
+  openclaw-config:
+    name: openclaw-config
+  openclaw-workspace:
+    name: openclaw-workspace
+
+networks:
+  openclaw-network:
+    driver: bridge
