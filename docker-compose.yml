@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: openclaw
     ports:
-      - "127.0.0.1:18789:18789"  # localhost only
+      - "18789:18789"  # localhost only
     volumes:
       - openclaw-config:/home/node/.openclaw
       - openclaw-workspace:/home/node/.openclaw/workspace
@@ -26,15 +26,9 @@ services:
       retries: 3
       start_period: 10s
     restart: unless-stopped
-    networks:
-      - openclaw-network
 
 volumes:
   openclaw-config:
     name: openclaw-config
   openclaw-workspace:
     name: openclaw-workspace
-
-networks:
-  openclaw-network:
-    driver: bridge
