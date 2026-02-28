@@ -9,6 +9,7 @@ services:
     volumes:
       - openclaw-config:/home/node/.openclaw
       - openclaw-workspace:/home/node/.openclaw/workspace
+      - openclaw-user-config:/home/node/.config
     environment:
       - NODE_ENV=production
       - GH_TOKEN=${GH_TOKEN}
@@ -24,3 +25,5 @@ volumes:
     name: openclaw-config
   openclaw-workspace:
     name: openclaw-workspace
+  openclaw-user-config:
+    name: openclaw-user-config
