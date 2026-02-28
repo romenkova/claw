@@ -31,6 +31,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Set up directories
 RUN mkdir -p /home/node/.openclaw/workspace && \
+    mkdir -p /home/node/.config && \
     chown -R node:node /home/node
 
 # Install OpenClaw globally
