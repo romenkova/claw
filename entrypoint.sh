@@ -3,8 +3,22 @@ set -e
 
 # GH_TOKEN is automatically used by gh CLI if set in environment
 
+# Clone workspace repository if not already cloned
+WORKSPACE_DIR="/home/node/.openclaw/workspace"
+TOOLS_MONOREPO="$WORKSPACE_DIR/tools-monorepo"
+
+if [ ! -d "$WORKSPACE_DIR/.git" ]; then
+    echo "Cloning workspace repository..."
+    git clone https://github.com/romenkova/claw-server.git "$WORKSPACE_DIR" || git clone https://github.com/romenkova/claw-server.git "$WORKSPACE_DIR" --depth 1
+    echo "Workspace repository cloned."
+else
+    echo "Pulling latest changes..."
+    cd "$WORKSPACE_DIR"
+    git pull
+    echo "Workspace repository updated."
+fi
+
 # Post-install: set up pnpm, install packages, build, and link globally
-TOOLS_MONOREPO="/home/node/.openclaw/workspace/tools-monorepo"
 if [ -d "$TOOLS_MONOREPO" ]; then
     echo "Setting up tools-monorepo..."
     export PNPM_HOME="/home/node/.local/share/pnpm"
