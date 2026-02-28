@@ -36,6 +36,15 @@ RUN mkdir -p /home/node/.openclaw/workspace && \
 # Install OpenClaw globally
 RUN npm install -g openclaw@latest
 
+# Post-install: set up pnpm, install packages, build, and link globally
+RUN cd ~/.openclaw/workspace/tools-monorepo && \
+    export PNPM_HOME="/home/node/.local/share/pnpm" && \
+    export PATH="$PNPM_HOME:$PATH" && \
+    pnpm install && \
+    pnpm build && \
+    cd apps/cli && \
+    pnpm link --global
+
 # Copy and set up entrypoint
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
