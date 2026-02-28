@@ -43,15 +43,6 @@ RUN chmod +x /entrypoint.sh
 # Switch to non-root user
 USER node
 
-# Post-install: set up pnpm, install packages, build, and link globally
-RUN cd /home/node/.openclaw/workspace/tools-monorepo && \
-    export PNPM_HOME="/home/node/.local/share/pnpm" && \
-    export PATH="$PNPM_HOME:$PATH" && \
-    pnpm install && \
-    pnpm build && \
-    cd apps/cli && \
-    pnpm link --global
-
 # Expose OpenClaw port
 EXPOSE 18789
 
