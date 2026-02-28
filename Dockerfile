@@ -14,8 +14,17 @@ RUN apt-get update && \
     g++ \
     cmake \
     ca-certificates \
+    procps \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Homebrew
+RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && \
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /etc/profile.d/brew.sh
+ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
+
+# Install GitHub CLI via Homebrew
+RUN brew install gh
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
